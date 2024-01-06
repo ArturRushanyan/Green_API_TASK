@@ -1,3 +1,5 @@
+const Producer = require('../../RabbitMq/producer');
+
 const multiplicate = async (req, res) => {
     const number = req.body.value;
     const producer = new Producer();
@@ -5,6 +7,7 @@ const multiplicate = async (req, res) => {
     if (!number || isNaN(number)) {
         return res.status(400).json({ message: 'Please send number value' });
     } else {
+        const result = await producer.publishMessage(number)
         return res.status(200).json({ message: `Result is ${result}` });
     }
 };
