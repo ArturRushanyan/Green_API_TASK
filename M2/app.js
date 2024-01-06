@@ -11,9 +11,10 @@ async function processNumber(number) {
 }
 
 async function consumeMessages() {
-    const rpc_queue = config.rabbitMQ.rpc_queue;
     let connection;
     let channel;
+    const rpc_queue = config.rabbitMQ.rpc_queue;
+
     try {
         connection = await amqp.connect(config.rabbitMQ.url);
         channel = await connection.createChannel();
@@ -39,7 +40,6 @@ async function consumeMessages() {
     });
 
     console.log("M2 server is up and waiting!");
-
 }
 
 consumeMessages();

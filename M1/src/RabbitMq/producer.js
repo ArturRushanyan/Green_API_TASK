@@ -9,14 +9,14 @@ class Producer {
         return Math.random().toString() +
                Math.random().toString() +
                Math.random().toString();
-      }
+    }
 
     async createChannel() {
         try {
             this.connection = await amqp.connect(config.rabbitMQ.url);
             this.channel = await this.connection.createChannel(); 
         } catch (error) {
-            console.log('error =>>>', error.message);
+            console.log('error =>', error.message);
             return;
         }   
     }
@@ -26,12 +26,11 @@ class Producer {
             await this.createChannel();
         }
 
-        const q = await this.channel.assertQueue('', { exclusive: true }); 
+        const assertQueue = await this.channel.assertQueue('', { exclusive: true }); 
         const correlationId = this.generateUuid();
-
         
         const result = new Promise((resolve) => {
-            this.channel.consume(q.queue, function(msg) {
+            this.channel.consume(assertQueue.queue, function(msg) {
                 if (msg.properties.correlationId === correlationId) {
                     const result = msg.content.toString();
                     console.log(`= M1 Got the result: ${result}`);
@@ -40,13 +39,15 @@ class Producer {
             }, {
                 noAck: true
             });    
-        })
+        });
+
         console.log(`= M1 Sends ${value} and waits for the result`);
-        this.channel.sendToQueue(config.rabbitMQ.rpc_queue,
+        this.channel.sendToQueue(
+            config.rabbitMQ.rpc_queue,
             Buffer.from(value.toString()),
             {
                 correlationId: correlationId,
-                replyTo: q.queue 
+                replyTo: assertQueue.queue 
             }
         );
         
@@ -54,7 +55,6 @@ class Producer {
             this.connection.close();
             return returnValue;
         });
-        
     }
 }
 

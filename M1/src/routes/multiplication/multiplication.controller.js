@@ -5,13 +5,12 @@ const multiplicate = async (req, res) => {
     const producer = new Producer();
     
     if (!number || isNaN(number)) {
-        return res.status(400).json({ message: 'Please send number value' });
+        return res.status(400).json({ message: 'Invalid input' });
     } else {
-        const result = await producer.publishMessage(number)
-        return res.status(200).json({ message: `Result is ${result}` });
+        const result = await producer.publishMessage(number);
+        return res.status(200).json({ result });
     }
 };
-
 
 module.exports = {
     multiplicate

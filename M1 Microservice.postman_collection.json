@@ -1,0 +1,38 @@
+{
+	"info": {
+		"_postman_id": "6a4016fa-357f-429c-bda7-2ac8c1de25f5",
+		"name": "M1 Microservice",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Request to M1 service",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"value\": 11\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/v1/multiplication",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"multiplication"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
